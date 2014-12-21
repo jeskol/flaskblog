@@ -59,6 +59,25 @@ def add_entry():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
+@app.route('/edit/<postid>', methods=['GET', 'POST'])
+def edit_entry(postid):
+    if not session.get('logged_in'):
+        abort(401)
+    if request.method == 'POST':
+        g.db.execute('update entries set title = ?, text = ? where id = ?',
+                 [request.form['title'], request.form['text'], postid])
+        g.db.commit()
+        flash('Entry was successfully updated')
+        return redirect(url_for('show_post', postid=postid))
+    db_results = g.db.execute('select id, title, text from entries where id = ?', postid)
+    entry = dict()
+    for row in db_results.fetchall():
+        entry = { 'postid' : row[0],
+                  'title' : row[1],
+                  'text' : row[2] 
+                }
+    return render_template('edit_entry.html', entry=entry)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
