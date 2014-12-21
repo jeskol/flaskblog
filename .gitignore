@@ -52,3 +52,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Flaskblog specific
+flaskr.conf
+flaskr.db
