@@ -11,5 +11,6 @@ http://flask.pocoo.org/docs/0.10/tutorial/schema/ - Database portion starts here
 
 ToDo
 ====
-* Create DB setup script
+* Allow editing of posts
+* Update template to link to individual posts
 
