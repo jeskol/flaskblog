@@ -13,7 +13,11 @@
   {% endif %}
   <ul class=entries>
   {% for entry in entries %}
-    <li><h2><a href="/post/{{ entry.postid }}">{{ entry.title }}</a></h2>{{ entry.text|safe }}
+    <li>
+      {% if session.logged_in %}
+        <a href="/edit/{{ entry.postid }}"><img class="button" src="{{ url_for('static', filename='edit.png') }}" title="Edit this post" /></a>
+      {% endif %}
+      <h2><a href="/post/{{ entry.postid }}">{{ entry.title }}</a></h2><p>{{ entry.modified }}</p>{{ entry.text|safe }}
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em>
   {% endfor %}

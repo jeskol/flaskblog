@@ -11,5 +11,12 @@ http://flask.pocoo.org/docs/0.10/tutorial/schema/ - Database portion starts here
 
 ToDo
 ====
-* Add an edit button to each post when logged in.
 * Spruce up CSS
+* Limit main page entries
+* Add a list entries page
+
+Changelog
+=========
+* Added Edit buttons
+* Database stores created and modified dates, these are shown with entries now.
+* Blog title links to main page

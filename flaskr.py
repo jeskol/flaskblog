@@ -39,14 +39,14 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select id, title, text from entries order by id desc')
-    entries = [dict(postid=row[0], title=row[1], text=row[2]) for row in cur.fetchall()]
+    cur = g.db.execute('select id, title, text, modified from entries order by created desc')
+    entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in cur.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
 @app.route('/post/<postid>')
 def show_post(postid):
-    db_results = g.db.execute('select id, title, text from entries where id = ?', postid)
-    entries = [dict(postid=row[0], title=row[1], text=row[2]) for row in db_results.fetchall()]
+    db_results = g.db.execute('select id, title, text, modified from entries where id = ?', postid)
+    entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in db_results.fetchall()]
     return render_template('show_entries.html', entries=entries)
 
 @app.route('/add', methods=['POST'])
@@ -64,17 +64,18 @@ def edit_entry(postid):
     if not session.get('logged_in'):
         abort(401)
     if request.method == 'POST':
-        g.db.execute('update entries set title = ?, text = ? where id = ?',
+        g.db.execute('update entries set title = ?, text = ?, modified=datetime(\'now\') where id = ?',
                  [request.form['title'], request.form['text'], postid])
         g.db.commit()
         flash('Entry was successfully updated')
         return redirect(url_for('show_post', postid=postid))
-    db_results = g.db.execute('select id, title, text from entries where id = ?', postid)
+    db_results = g.db.execute('select id, title, text, modified from entries where id = ?', postid)
     entry = dict()
     for row in db_results.fetchall():
         entry = { 'postid' : row[0],
                   'title' : row[1],
-                  'text' : row[2] 
+                  'text' : row[2],
+                  'modified' : row[3] 
                 }
     return render_template('edit_entry.html', entry=entry)
 
