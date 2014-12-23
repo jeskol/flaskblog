@@ -50,10 +50,6 @@ def max_pages():
 def show_entries(page=1):
     page = int(page)
     pagination = dict(max_pages=max_pages(), page=page, next=(page + 1), prev=(page -1))
-    #pagination['max_pages'] = max_pages()
-    #pagination['page'] = page
-    #pagination['next'] = page + 1
-    #pagination['prev'] = page - 1
     offset = pagination['prev'] * MAIN_PAGE_COUNT
     cur = g.db.execute('select id, title, text, modified from entries order by created desc limit %s offset %s'%(MAIN_PAGE_COUNT, offset))
     entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in cur.fetchall()]
@@ -61,9 +57,10 @@ def show_entries(page=1):
 
 @app.route('/post/<postid>')
 def show_post(postid):
+    pagination = dict(max_pages=1)
     db_results = g.db.execute('select id, title, text, modified from entries where id = ?', postid)
     entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in db_results.fetchall()]
-    return render_template('show_entries.html', entries=entries)
+    return render_template('show_entries.html', entries=entries, pagination=pagination)
 
 @app.route('/add', methods=['POST'])
 def add_entry():

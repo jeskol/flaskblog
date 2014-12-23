@@ -22,6 +22,6 @@ h2              { font-size: 1.2em; }
 .error          { background: #f0d6d6; padding: 0.5em; }
 .button         { width: 18px; height: 18px; display: inline-block;
                   float: left; }
-.footer         { border-top: 1px solid black; padding: 2px; height: 20px; }
+.footer         { border-top: 1px solid #ccc; padding: 2px; height: 20px; }
 .back           { float: left; }
 .forward        { float: right; }
