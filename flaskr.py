@@ -62,6 +62,12 @@ def show_post(postid):
     entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in db_results.fetchall()]
     return render_template('show_entries.html', entries=entries, pagination=pagination)
 
+@app.route('/list')
+def list_entries():
+    list_results = g.db.execute('select id, title, modified from entries order by created desc')
+    entries = [dict(postid=row[0], title=row[1], modified=row[2]) for row in list_results.fetchall()]
+    return render_template('list_entries.html', entries=entries)
+
 @app.route('/add', methods=['POST'])
 def add_entry():
     if not session.get('logged_in'):

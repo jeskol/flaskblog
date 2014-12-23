@@ -12,7 +12,7 @@ http://flask.pocoo.org/docs/0.10/tutorial/schema/ - Database portion starts here
 ToDo
 ====
 * Spruce up CSS
-* Add a list entries page
+* Guess I should think up some more stuff
 
 Changelog
 =========
@@ -21,3 +21,4 @@ Changelog
 * Blog title links to main page
 * Limit main page entries
 * Pagination added
+* Add a list entries page
