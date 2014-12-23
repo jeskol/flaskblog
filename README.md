@@ -12,7 +12,6 @@ http://flask.pocoo.org/docs/0.10/tutorial/schema/ - Database portion starts here
 ToDo
 ====
 * Spruce up CSS
-* Limit main page entries
 * Add a list entries page
 
 Changelog
@@ -20,3 +19,5 @@ Changelog
 * Added Edit buttons
 * Database stores created and modified dates, these are shown with entries now.
 * Blog title links to main page
+* Limit main page entries
+* Pagination added
