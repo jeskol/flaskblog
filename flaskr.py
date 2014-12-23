@@ -3,6 +3,7 @@
 # all the imports
 import sqlite3
 from contextlib import closing
+from math import ceil
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # default configuration
@@ -11,6 +12,7 @@ DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
+MAIN_PAGE_COUNT = 3
 
 # create our little application :)
 app = Flask(__name__)
@@ -37,11 +39,25 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
+def max_pages():
+    result = g.db.execute('select count(*) from entries')
+    total_posts = int(result.fetchall()[0][0])
+    max_pages = ceil(float(total_posts) / float(MAIN_PAGE_COUNT))
+    return int(max_pages)
+
 @app.route('/')
-def show_entries():
-    cur = g.db.execute('select id, title, text, modified from entries order by created desc')
+@app.route('/page/<page>')
+def show_entries(page=1):
+    page = int(page)
+    pagination = dict(max_pages=max_pages(), page=page, next=(page + 1), prev=(page -1))
+    #pagination['max_pages'] = max_pages()
+    #pagination['page'] = page
+    #pagination['next'] = page + 1
+    #pagination['prev'] = page - 1
+    offset = pagination['prev'] * MAIN_PAGE_COUNT
+    cur = g.db.execute('select id, title, text, modified from entries order by created desc limit %s offset %s'%(MAIN_PAGE_COUNT, offset))
     entries = [dict(postid=row[0], title=row[1], text=row[2], modified=row[3]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
+    return render_template('show_entries.html', entries=entries, pagination=pagination)
 
 @app.route('/post/<postid>')
 def show_post(postid):

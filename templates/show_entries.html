@@ -17,9 +17,20 @@
       {% if session.logged_in %}
         <a href="/edit/{{ entry.postid }}"><img class="button" src="{{ url_for('static', filename='edit.png') }}" title="Edit this post" /></a>
       {% endif %}
-      <h2><a href="/post/{{ entry.postid }}">{{ entry.title }}</a></h2><p>{{ entry.modified }}</p>{{ entry.text|safe }}
+      <h2><a href="/post/{{ entry.postid }}">{{ entry.title }}</a></h2><p>{{ entry.modified }}</p>
+      <pre>{{ entry.text|safe }}</pre>
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em>
   {% endfor %}
   </ul>
+  {% if pagination.max_pages > 1 %}
+    <div class="footer">
+    {% if pagination.page > 1 %}
+      <a class="back" href="{{ url_for('show_entries', page=pagination.prev) }}">Previous Page</a>
+    {% endif %}
+    {% if pagination.max_pages > pagination.page %}
+      <a class="forward" href="{{ url_for('show_entries', page=pagination.next) }}">Next Page</a>
+    {% endif %}
+    </div>
+  {% endif %}
 {% endblock %}
