@@ -12,7 +12,8 @@ http://flask.pocoo.org/docs/0.10/tutorial/schema/ - Database portion starts here
 ToDo
 ====
 * Spruce up CSS
-* Guess I should think up some more stuff
+* New Post dialog should collapse
+* Add background image
 
 Changelog
 =========
